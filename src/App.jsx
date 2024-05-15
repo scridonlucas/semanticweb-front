@@ -25,6 +25,7 @@ function App() {
       alert(error.message);
     }
   };
+
   return (
     <div style={{ minHeight: '100%' }}>
       <Header text="Proiect Web Semantic - Scridon Lucas, Timandi Sabin" />

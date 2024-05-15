@@ -1,71 +1,84 @@
 import Button from './Button';
+import parsers from '../utils/parsers';
+import stlyes from '../utils/styles';
+import { useEffect, useState } from 'react';
 
 export default function Form({ data }) {
-  const formContainerStyle = {
-    backgroundColor: 'white',
-    padding: '10px',
-    borderRadius: '8px',
-    maxWidth: '400px',
-    margin: '20px',
-    boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
-    border: '1px solid #ccc',
+  const [airportKey, setAirportKey] = useState('');
+  const [options, setOptions] = useState([]);
+  const [flightNumber, setFlightNumber] = useState('');
+  const [arrivalAirport, setArrivalAirport] = useState('');
+  const [departureTime, setDepartureTime] = useState('2024-06-16T14:45');
+
+  useEffect(() => {
+    data ? setOptions(parsers.gatherAirportKeys(data)) : [];
+  }, [data]);
+
+  const onAirportChange = (e) => {
+    setAirportKey(e.target.value);
   };
 
-  const pStyle = {
-    fontSize: '18px',
-    color: 'black',
+  const onFlightNumberChange = (e) => {
+    setFlightNumber(e.target.value);
   };
 
-  const hStyle = {
-    fontSize: '20px',
-    fontWeight: 'bold',
-    color: 'black',
+  const onArrivalAirportChange = (e) => {
+    setArrivalAirport(e.target.value);
   };
 
-  const inputStyle = {
-    padding: '10px',
-    fontSize: '16px',
-    color: '#333',
-    backgroundColor: '#fff',
-    border: '1px solid #ccc',
-    borderRadius: '4px',
-    boxShadow: '0 2px 5px rgba(0, 0, 0, 0.1)',
-    width: '60%',
-    maxWidth: '300px',
+  const onDepartureTimeChange = (e) => {
+    setDepartureTime(e.target.value);
   };
 
-  const selectStyle = {
-    padding: '10px',
-    fontSize: '16px',
-    color: '#333',
-    backgroundColor: '#fff',
-    border: '1px solid #ccc',
-    borderRadius: '4px',
-    cursor: 'pointer',
-    boxShadow: '0 2px 5px rgba(0, 0, 0, 0.1)',
-    width: '60%',
-    maxWidth: '300px',
+  const onFormSubmit = (e) => {
+    e.preventDefault();
+    console.log('as');
   };
-  const inputsContainer = {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '10px',
-  };
+
   return (
-    <div style={formContainerStyle}>
-      <header style={hStyle}>Send data to RDF - Form</header>
+    <div style={stlyes.formContainerStyle}>
+      <header style={stlyes.hStyle}>Send data to RDF - Form</header>
       <br />
       <form>
-        <div style={inputsContainer}>
-          <label style={pStyle}>Cheie</label>
-          <select style={selectStyle}></select>
+        <div style={stlyes.inputsContainer}>
+          <label style={stlyes.pStyle}>Cheie</label>
+          {options.length === 0 ? (
+            <select style={stlyes.selectStyleDisabled} disabled></select>
+          ) : (
+            <select
+              value={airportKey}
+              onChange={onAirportChange}
+              style={stlyes.selectStyle}
+            >
+              {options.map((option) => (
+                <option key={option.key} value={option.key}>
+                  {option.key}
+                </option>
+              ))}
+            </select>
+          )}
           <label>Numar Zbor</label>
-          <input style={inputStyle} type="text" />
-          <label>Destinatie</label>
-          <input style={inputStyle} type="text" />
+          <input
+            style={stlyes.inputStyle}
+            value={flightNumber}
+            onChange={onFlightNumberChange}
+            type="text"
+          />
+          <label>Locatie destinatie</label>
+          <input
+            style={stlyes.inputStyle}
+            value={arrivalAirport}
+            onChange={onArrivalAirportChange}
+            type="text"
+          />
           <label>Data decolare</label>
-          <input type="datetime-local" />
-          <Button text="Send data!" color="white"></Button>
+          <input
+            style={stlyes.inputStyle}
+            value={departureTime}
+            onChange={onDepartureTimeChange}
+            type="datetime-local"
+          />
+          <Button onClick={onFormSubmit} text="Send data!" color="white" />
         </div>
       </form>
     </div>

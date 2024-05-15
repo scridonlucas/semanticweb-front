@@ -30,4 +30,11 @@ const parseAirportsData = (data) => {
   return parsedData;
 };
 
-export default { parseAirportsData };
+const gatherAirportKeys = (data) => {
+  const keys = data.map((airport) => ({
+    key: airport.id,
+  }));
+  return keys;
+};
+
+export default { parseAirportsData, gatherAirportKeys };
