@@ -2,10 +2,11 @@ import Button from './Button';
 import parsers from '../utils/parsers';
 import stlyes from '../utils/styles';
 import { useEffect, useState } from 'react';
+import rdfService from '../services/rdfService';
 
 export default function Form({ data }) {
-  const [airportKey, setAirportKey] = useState('');
   const [options, setOptions] = useState([]);
+  const [airportKey, setAirportKey] = useState('AIHC');
   const [flightNumber, setFlightNumber] = useState('');
   const [arrivalAirport, setArrivalAirport] = useState('');
   const [departureTime, setDepartureTime] = useState('2024-06-16T14:45');
@@ -30,9 +31,30 @@ export default function Form({ data }) {
     setDepartureTime(e.target.value);
   };
 
-  const onFormSubmit = (e) => {
+  const onFormSubmit = async (e) => {
     e.preventDefault();
-    console.log('as');
+    if (airportKey === '' || flightNumber === '' || arrivalAirport === '') {
+      alert('Please fill all form inputs!');
+      return 0;
+    }
+    const convertedDate = parsers.formatDateString(departureTime);
+
+    const formData = {
+      airportKey,
+      allAirports: data,
+      flight: {
+        flightNumber,
+        arrivalAirport,
+        departureTime: convertedDate,
+      },
+    };
+
+    try {
+      const response = await rdfService.postData(formData);
+      alert(response);
+    } catch (error) {
+      alert(error);
+    }
   };
 
   return (

@@ -37,4 +37,17 @@ const gatherAirportKeys = (data) => {
   return keys;
 };
 
-export default { parseAirportsData, gatherAirportKeys };
+function formatDateString(dateString, time = '00:00:00', offset = '+02:00') {
+  let date = new Date(dateString);
+
+  if (dateString.length === 10) {
+    dateString += `T${time}`;
+    date = new Date(dateString);
+  }
+  const formattedDate =
+    date.toISOString().slice(0, 19).replace('T', 'T') + offset;
+
+  return formattedDate;
+}
+
+export default { parseAirportsData, gatherAirportKeys, formatDateString };
