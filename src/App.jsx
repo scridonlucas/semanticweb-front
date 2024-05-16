@@ -5,8 +5,10 @@ import FirstTable from './Components/FirstTable';
 import scrapingService from './services/scrapingService';
 import { useState } from 'react';
 import parsers from './utils/parsers';
+import rdfService from './services/rdfService';
 function App() {
   const [airportsData, setAirportsData] = useState();
+  const [rdfData, setRdfData] = useState();
 
   const airportTableColumns = [
     'Nume aeroport',
@@ -26,6 +28,16 @@ function App() {
     }
   };
 
+  const gatherRDFData = async () => {
+    try {
+      const rdfDataResponse = await rdfService.gatherData();
+      setRdfData(rdfDataResponse);
+    } catch (error) {
+      alert(error.message);
+    }
+  };
+
+  console.log(rdfData);
   return (
     <div style={{ minHeight: '100%' }}>
       <Header text="Proiect Web Semantic - Scridon Lucas, Timandi Sabin" />
@@ -39,6 +51,7 @@ function App() {
       )}
       <br />
       <Form data={airportsData}></Form>
+      <Button text="Gather RDF4J Data!" onClick={gatherRDFData}></Button>
     </div>
   );
 }

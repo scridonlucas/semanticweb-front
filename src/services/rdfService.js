@@ -11,6 +11,15 @@ const postData = async (formData) => {
   }
 };
 
+const gatherData = async () => {
+  try {
+    const response = await axios.get(baseUrl);
+    return response.data;
+  } catch (error) {
+    throw new Error('Failed to send data!');
+  }
+};
 export default {
   postData,
+  gatherData,
 };
