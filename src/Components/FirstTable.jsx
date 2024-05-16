@@ -44,7 +44,7 @@ export default function FirstTable({ airportsData, columns }) {
               <td style={tdStyle}>{flight.iataCode}</td>
               <td style={tdStyle}>{flight.location}</td>
               <td style={tdStyle}>{flight.flightNumber}</td>
-              <td style={tdStyle}>{flight.destination}</td>
+              <td style={tdStyle}>{flight.arrivalAirport}</td>
               <td style={tdStyle}>{flight.departureTime}</td>
             </tr>
           ))}

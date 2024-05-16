@@ -4,7 +4,7 @@ import stlyes from '../utils/styles';
 import { useEffect, useState } from 'react';
 import rdfService from '../services/rdfService';
 
-export default function Form({ data }) {
+export default function Form({ data, setEnableRDF }) {
   const [options, setOptions] = useState([]);
   const [airportKey, setAirportKey] = useState('AIHC');
   const [flightNumber, setFlightNumber] = useState('');
@@ -51,6 +51,7 @@ export default function Form({ data }) {
 
     try {
       const response = await rdfService.postData(formData);
+      setEnableRDF(true);
       alert(response);
     } catch (error) {
       alert(error);

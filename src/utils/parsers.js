@@ -22,7 +22,7 @@ const parseAirportsData = (data) => {
           iataCode: airport.iataCode,
           location: `${airport.address.locality}, ${airport.address.country}`,
           flightNumber: flight.flightNumber,
-          destination: flight.destination,
+          arrivalAirport: flight.arrivalAirport,
           departureTime: formatDate(flight.departureTime),
         }))
       ))
