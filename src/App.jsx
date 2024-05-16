@@ -6,6 +6,7 @@ import scrapingService from './services/scrapingService';
 import { useState } from 'react';
 import parsers from './utils/parsers';
 import rdfService from './services/rdfService';
+
 function App() {
   const [airportsData, setAirportsData] = useState();
   const [airportsDataRDF, setAirportsDataRDF] = useState();
@@ -33,8 +34,6 @@ function App() {
     try {
       const rdfDataResponse = await rdfService.gatherData();
       setAirportsDataRDF(rdfDataResponse);
-      console.log('x');
-      console.log(rdfDataResponse);
     } catch (error) {
       alert(error.message);
     }
@@ -52,7 +51,7 @@ function App() {
         />
       )}
       <br />
-      <Form data={airportsData} setEnableRDF={setEnableRDF}></Form>
+      <Form data={airportsData} setButtonState={setEnableRDF}></Form>
       {enableRDF ? (
         <Button
           text="Gather RDF4J Data!"
@@ -67,6 +66,16 @@ function App() {
           airportsData={parsers.parseAirportsData(airportsDataRDF)}
           columns={airportTableColumns}
         />
+      )}
+      <br />
+      {airportsDataRDF ? (
+        <Button
+          text="Send data to JSON Server!"
+          onClick={gatherRDFData}
+          disabled={false}
+        />
+      ) : (
+        <Button text="Send data to JSON Server!" disabled={true} />
       )}
     </div>
   );
