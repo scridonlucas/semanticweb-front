@@ -6,11 +6,14 @@ import scrapingService from './services/scrapingService';
 import { useState } from 'react';
 import parsers from './utils/parsers';
 import rdfService from './services/rdfService';
+import jsonServerService from './services/jsonServerService';
 
 function App() {
   const [airportsData, setAirportsData] = useState();
   const [airportsDataRDF, setAirportsDataRDF] = useState();
   const [enableRDF, setEnableRDF] = useState(false);
+  const [enableGatherJSONServer, setEnableGatheRJSONServer] = useState(false);
+  const [jsonServerData, setJsonServerData] = useState();
 
   const airportTableColumns = [
     'Nume aeroport',
@@ -33,7 +36,27 @@ function App() {
   const gatherRDFData = async () => {
     try {
       const rdfDataResponse = await rdfService.gatherData();
+      console.log(rdfDataResponse);
       setAirportsDataRDF(rdfDataResponse);
+    } catch (error) {
+      alert(error.message);
+    }
+  };
+
+  const sendJsonServerData = async () => {
+    try {
+      const response = await jsonServerService.postData(airportsDataRDF);
+      setEnableGatheRJSONServer(true);
+      alert(response);
+    } catch (error) {
+      alert(error.message);
+    }
+  };
+
+  const gatherJsonServerData = async () => {
+    try {
+      const jsonServerData = await jsonServerService.gatherData();
+      setJsonServerData(jsonServerData);
     } catch (error) {
       alert(error.message);
     }
@@ -71,11 +94,27 @@ function App() {
       {airportsDataRDF ? (
         <Button
           text="Send data to JSON Server!"
-          onClick={gatherRDFData}
+          onClick={sendJsonServerData}
           disabled={false}
         />
       ) : (
         <Button text="Send data to JSON Server!" disabled={true} />
+      )}
+      <br />
+      {enableGatherJSONServer ? (
+        <Button
+          text="Gather data from JSON Server!"
+          onClick={gatherJsonServerData}
+          disabled={false}
+        />
+      ) : (
+        <Button text="Gather data from JSON Server" disabled={true} />
+      )}
+      {jsonServerData && (
+        <FirstTable
+          airportsData={parsers.parseAirportsData(jsonServerData)}
+          columns={airportTableColumns}
+        />
       )}
     </div>
   );

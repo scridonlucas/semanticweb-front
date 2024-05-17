@@ -16,7 +16,7 @@ const gatherData = async () => {
     const response = await axios.get(baseUrl);
     return response.data;
   } catch (error) {
-    throw new Error('Failed to post data!');
+    throw new Error('Failed to gather JSON data!');
   }
 };
 

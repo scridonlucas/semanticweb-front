@@ -23,8 +23,7 @@ export default function FirstTable({ airportsData, columns }) {
     borderBottom: '1px solid #ddd',
     fontSize: '16px',
   };
-  console.log('test');
-  console.log(airportsData);
+  
   return (
     <div style={tableContainerStyle}>
       <table style={tableStyle}>
